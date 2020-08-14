@@ -21,18 +21,20 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <EditText
-        android:layout_width="match_parent"
+        android:id="@+id/filtro"
+        android:layout_width="380dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="80dp"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        android:id="@+id/filtro"/>
+        android:gravity=""
+        android:hint="Search" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="130dp"
         android:layout_marginLeft="10dp"
         android:id="@+id/listaNomes"/>
 

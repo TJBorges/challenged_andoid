@@ -5,8 +5,10 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,15 +17,22 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ArrayAdapter adapter;
+    private ArrayList<String> names = new ArrayList<>();
+    private ArrayList<String> namesContains = new ArrayList<>();
+    private String filtroDig;
+    private ListView lista;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,25 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ListView lista = (ListView) findViewById(R.id.listaNomes);
         final EditText filtro = (EditText) findViewById(R.id.filtro);
 
-        final ArrayList<String> names = new ArrayList<>();
-        names.add("Marcos");
-        names.add("Marco");
-        names.add("Arthur");
-        names.add("Artur");
-        names.add("Carol");
-        names.add("Carlos");
-        names.add("Carina");
-        names.add("Karina");
-        names.add("Marcela");
-        names.add("Marcerlia");
-        names.add("Maria");
-
-        adapter = new ArrayAdapter(this, R.layout.fragment_first, names);
-        lista.setAdapter(adapter);
-
+        iniciarLista();
         filtro.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -57,16 +50,51 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                filtroDig = charSequence.toString().trim();
+                if (filtroDig.isEmpty()) {
+                    adapter.clear();
+                    iniciarLista();
+                } else {
+                    adapter.clear();
+                    iniciarLista();
+                    for (String name : names) {
+                        if (name.toLowerCase().contains(filtroDig.trim().toLowerCase())) {
+                            namesContains.add(name);
+                        }
+                    }
+                    adapter.clear();
+                    atualizarLista(namesContains);
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                (MainActivity.this).adapter.getFilter().filter(editable);
-
             }
-
         });
-
     }
 
+    private void iniciarLista() {
+        lista = (ListView) findViewById(R.id.listaNomes);
+        names.add("Marcos Farinha");
+        names.add("Marco Tulio");
+        names.add("Arthur Lira");
+        names.add("Artur Marcal");
+        names.add("Carol Ferreira");
+        names.add("Carlos Jose");
+        names.add("Carina Barros");
+        names.add("Karina Borges");
+        names.add("Marcela de Souza");
+        names.add("Marcerlia Cabral");
+        names.add("Maria Fernanda");
+        names.add("Julio Henrique");
+        names.add("Marcos Edgar");
+        names.add("Tulio Silva");
+
+        atualizarLista(names);
+    }
+
+    private void atualizarLista(ArrayList<String> name) {
+        adapter = new ArrayAdapter(this, R.layout.fragment_first, name);
+        lista.setAdapter(adapter);
+    }
 }
